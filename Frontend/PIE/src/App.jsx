@@ -1,35 +1,38 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+// App.js
+import React, { useState } from 'react';
+import JobForm from './Components/JobForm';
+import RuleSelector from './Components/RuleSelector';
+import ScheduleDisplay from './Components/ScheduleDisplay';
+import { scheduleJobs } from './Components/schedulingRules';
+import './App.css';
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [jobs, setJobs] = useState([]);
+  const [selectedRule, setSelectedRule] = useState("FCFS");
+  const [scheduledJobs, setScheduledJobs] = useState([]);
+
+  const handleAddJob = (job) => {
+    setJobs([...jobs, job]);
+  };
+
+  const handleRuleChange = (rule) => {
+    setSelectedRule(rule);
+  };
+
+  const handleScheduleJobs = () => {
+    const result = scheduleJobs(jobs, selectedRule);
+    setScheduledJobs(result);
+  };
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <div className="App">
+      <h1>Job Scheduling Simulator</h1>
+      <JobForm onAddJob={handleAddJob} />
+      <RuleSelector selectedRule={selectedRule} onRuleChange={handleRuleChange} />
+      <button onClick={handleScheduleJobs}>Schedule Jobs</button>
+      <ScheduleDisplay scheduledJobs={scheduledJobs} />
+    </div>
+  );
 }
 
-export default App
+export default App;
