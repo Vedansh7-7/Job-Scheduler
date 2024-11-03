@@ -30,12 +30,43 @@ function App() {
 
   //send to backend
   const handleSubmit = async () => {
-    const dataToSend = {
-      processingRange,
-      dueDateMultiplier,
-      jobName,
-    };
-
+    let dataToSend = {};
+  
+    if (processingTimeRandom && dueDateRandom) {
+      // If both are random, send ranges and multipliers
+      dataToSend = {
+        processingRange,
+        dueDateMultiplier,
+        jobName,
+        jobCount,
+      };
+    } else if (processingTimeRandom && !dueDateRandom) {
+      // send range and due date array
+      const dueDates = jobs.map(job => job.dueDate); 
+      dataToSend = {
+        processingRange,
+        dueDates,
+        jobName,
+        jobCount,
+      };
+    } else if (!processingTimeRandom && dueDateRandom) {
+      //  send array of processing times and multipliers
+      const processingTimes = jobs.map(job => job.processingTime); 
+      dataToSend = {
+        processingTimes,
+        dueDateMultiplier,
+        jobName,
+        jobCount,
+      };
+    } else {
+      // If neither is random, send the full job details
+      dataToSend = {
+        jobs, // array for pt and dd
+        jobName,
+        jobCount,
+      };
+    }
+  
     try {
       const response = await fetch('http://localhost:5000/submit-data', {
         method: 'POST',
@@ -44,16 +75,17 @@ function App() {
         },
         body: JSON.stringify(dataToSend),
       });
-
+  
       if (!response.ok) {
         throw new Error('Failed to send data');
       }
-
+  
       console.log('Data sent successfully');
     } catch (error) {
       console.error('Error:', error);
     }
   };
+  
 
   return (
     <div className="App">
