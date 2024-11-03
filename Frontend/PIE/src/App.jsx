@@ -6,14 +6,15 @@ import { scheduleJobs } from './Components/schedulingRules';
 import './App.css';
 
 function App() {
-  const [jobCount, setJobCount] = useState(1); //min no. of job 
-  const [jobs, setJobs] = useState([]);//empty array initialised
-  const [selectedRule, setSelectedRule] = useState("FCFS");//default rule FCFS
+  const [jobCount, setJobCount] = useState(1);
+  const [jobs, setJobs] = useState([]);
+  const [selectedRule, setSelectedRule] = useState("FCFS");
   const [scheduledJobs, setScheduledJobs] = useState([]);
-  const [processingTimeRandom, setProcessingTimeRandom] = useState(false);//default as hardcoded
+  const [processingTimeRandom, setProcessingTimeRandom] = useState(false);
   const [dueDateRandom, setDueDateRandom] = useState(false);
   const [processingRange, setProcessingRange] = useState({ min: 1, max: 10 });
   const [dueDateMultiplier, setDueDateMultiplier] = useState({ a: 0.1, b: 0.8 });
+  const [jobName, setJobName] = useState("");  // Adding job name as a state
 
   const handleJobCountChange = (e) => setJobCount(Math.max(1, Number(e.target.value)));
   
@@ -25,6 +26,33 @@ function App() {
 
   const handleScheduleJobs = () => {
     setScheduledJobs(scheduleJobs(jobs, selectedRule));
+  };
+
+  //send to backend
+  const handleSubmit = async () => {
+    const dataToSend = {
+      processingRange,
+      dueDateMultiplier,
+      jobName,
+    };
+
+    try {
+      const response = await fetch('http://localhost:5000/submit-data', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(dataToSend),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to send data');
+      }
+
+      console.log('Data sent successfully');
+    } catch (error) {
+      console.error('Error:', error);
+    }
   };
 
   return (
@@ -68,7 +96,7 @@ function App() {
                   value={processingRange.max}
                   onChange={(e) => setProcessingRange({
                     ...processingRange,
-                    max: Math.max(Number(e.target.value), processingRange.min), // Ensure max >= min
+                    max: Math.max(Number(e.target.value), processingRange.min),
                   })}
                 />
               </label>
@@ -150,8 +178,11 @@ function App() {
           <button onClick={handleScheduleJobs}>Schedule Jobs</button>
         </div>
       )}
-      
+
       <ScheduleDisplay scheduledJobs={scheduledJobs} />
+
+      {/* Add a Submit button to send data to the backend */}
+      <button onClick={handleSubmit}>Submit</button>
     </div>
   );
 }
