@@ -39,6 +39,7 @@ function App() {
     let dataToSend = {
       randomizeAll,
       jobCount,
+      selectedRule,
     };
 
     if (processingTimeRandom && dueDateRandom) {
