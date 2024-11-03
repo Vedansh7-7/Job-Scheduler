@@ -13,17 +13,19 @@ function App() {
   const [processingTimeRandom, setProcessingTimeRandom] = useState(false);
   const [dueDateRandom, setDueDateRandom] = useState(false);
   const [processingRange, setProcessingRange] = useState({ min: 1, max: 10 });
-  const [dueDateMultiplier, setDueDateMultiplier] = useState({ a: 1, b: 2 });
+  const [dueDateMultiplier, setDueDateMultiplier] = useState({ a: 0.1, b: 0.8 });
 
   const handleJobCountChange = (e) => setJobCount(Math.max(1, Number(e.target.value)));
-
+  
   const handleAddJob = (newJob) => {
-    setJobs([...jobs, newJob]);
+    setJobs((prevJobs) => [...prevJobs, newJob]);
   };
 
   const handleRuleChange = (rule) => setSelectedRule(rule);
 
-  const handleScheduleJobs = () => setScheduledJobs(scheduleJobs(jobs, selectedRule));
+  const handleScheduleJobs = () => {
+    setScheduledJobs(scheduleJobs(jobs, selectedRule));
+  };
 
   return (
     <div className="App">
@@ -31,70 +33,98 @@ function App() {
       
       <div className="ptrandom random">
         <h3>Processing Time Options</h3>
-        <h5>[x,y]</h5>
+        <h5>[x, y]</h5>
         <label>
           <input
             type="checkbox"
             checked={processingTimeRandom}
             onChange={() => setProcessingTimeRandom(!processingTimeRandom)}
           />
-          <br/>Random Processing Time
+          <br />Random Processing Time
         </label>
         {processingTimeRandom && (
           <div>
-            <span style={{fontWeight: 600}}>x: </span>
-            <input
-              type="number"
-              placeholder="Min"
-              value={processingRange.min}
-              onChange={(e) => setProcessingRange({ ...processingRange, min: Number(e.target.value) })}
-            />
-            <br/>
-            <span style={{fontWeight: 600}}>y: </span>
-            <input
-              type="number"
-              placeholder="Max"
-              value={processingRange.max}
-              onChange={(e) => setProcessingRange({ ...processingRange, max: Number(e.target.value) })}
-            />
+            <div>
+              <label>
+                <strong>x:</strong>
+                <input
+                  type="number"
+                  placeholder="Min"
+                  value={processingRange.min}
+                  onChange={(e) => setProcessingRange({
+                    ...processingRange,
+                    min: Number(e.target.value),
+                  })}
+                />
+              </label>
+            </div>
+            <br />
+            <div>
+              <label>
+                <strong>y:</strong>
+                <input
+                  type="number"
+                  placeholder="Max"
+                  value={processingRange.max}
+                  onChange={(e) => setProcessingRange({
+                    ...processingRange,
+                    max: Math.max(Number(e.target.value), processingRange.min), // Ensure max >= min
+                  })}
+                />
+              </label>
+            </div>
           </div>
         )}
       </div>
 
       <div className="ddrandom random">
         <h3>Due Date Options</h3>
-        <h5>[(Total Processing Time)*(a),(Total Processing Time)*(b)]</h5>
+        <h5>[(Total Processing Time) * (a), (Total Processing Time) * (b)]</h5>
         <label>
           <input
             type="checkbox"
             checked={dueDateRandom}
             onChange={() => setDueDateRandom(!dueDateRandom)}
           />
-          <br/>Random Due Date
+          <br />Random Due Date
         </label>
         {dueDateRandom && (
           <div>
-            <span style={{fontWeight: 600}}>a: </span>
-            <input
-              type="number"
-              placeholder="Multiplier a"
-              value={dueDateMultiplier.a}
-              onChange={(e) => setDueDateMultiplier({ ...dueDateMultiplier, a: Number(e.target.value) })}
-            />
-            <br/>
-            <span style={{fontWeight: 600}}>b: </span>
-            <input
-              type="number"
-              placeholder="Multiplier b"
-              value={dueDateMultiplier.b}
-              onChange={(e) => setDueDateMultiplier({ ...dueDateMultiplier, b: Number(e.target.value) })}
-            />
+            <div>
+              <label>
+                <strong>a:</strong>
+                <input
+                  type="number"
+                  placeholder="Multiplier a"
+                  value={dueDateMultiplier.a}
+                  onChange={(e) => setDueDateMultiplier({
+                    ...dueDateMultiplier,
+                    a: Number(e.target.value),
+                  })}
+                />
+              </label>
+            </div>
+            <br />
+            <div>
+              <label>
+                <strong>b:</strong>
+                <input
+                  type="number"
+                  placeholder="Multiplier b"
+                  value={dueDateMultiplier.b}
+                  onChange={(e) => setDueDateMultiplier({
+                    ...dueDateMultiplier,
+                    b: Number(e.target.value),
+                  })}
+                />
+              </label>
+            </div>
           </div>
         )}
       </div>
 
       <label>
-        <h2>Number of Jobs:</h2> 
+        <h2>Number of Jobs:</h2>
         <input
           type="number"
           min="1"
@@ -110,14 +140,13 @@ function App() {
           onAddJob={handleAddJob}
           processingTimeRandom={processingTimeRandom}
           dueDateRandom={dueDateRandom}
+          processingRange={processingRange}
+          dueDateMultiplier={dueDateMultiplier}
         />
       ) : (
         <div>
           <p>All jobs added!</p>
-          <RuleSelector 
-            selectedRule={selectedRule} 
-            onRuleChange={handleRuleChange} 
-          />
+          <RuleSelector selectedRule={selectedRule} onRuleChange={handleRuleChange} />
           <button onClick={handleScheduleJobs}>Schedule Jobs</button>
         </div>
       )}
