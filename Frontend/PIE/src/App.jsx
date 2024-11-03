@@ -6,11 +6,11 @@ import { scheduleJobs } from './Components/schedulingRules';
 import './App.css';
 
 function App() {
-  const [jobCount, setJobCount] = useState(1);
-  const [jobs, setJobs] = useState([]);
-  const [selectedRule, setSelectedRule] = useState("FCFS");
+  const [jobCount, setJobCount] = useState(1); //min no. of job 
+  const [jobs, setJobs] = useState([]);//empty array initialised
+  const [selectedRule, setSelectedRule] = useState("FCFS");//default rule FCFS
   const [scheduledJobs, setScheduledJobs] = useState([]);
-  const [processingTimeRandom, setProcessingTimeRandom] = useState(false);
+  const [processingTimeRandom, setProcessingTimeRandom] = useState(false);//default as hardcoded
   const [dueDateRandom, setDueDateRandom] = useState(false);
   const [processingRange, setProcessingRange] = useState({ min: 1, max: 10 });
   const [dueDateMultiplier, setDueDateMultiplier] = useState({ a: 0.1, b: 0.8 });

@@ -11,6 +11,7 @@ function JobForm({ onAddJob, jobIndex, jobCount, processingTimeRandom, processin
 
       // Generate a new random processing time for each job
       const randomProcessingTime = Math.floor(Math.random() * (max - min + 1)) + min;
+    //   array for jobs 
       setJob((prev) => ({ ...prev, processingTime: randomProcessingTime }));
       setTotalProcessingTime((prev) => prev + randomProcessingTime);
     } else {
