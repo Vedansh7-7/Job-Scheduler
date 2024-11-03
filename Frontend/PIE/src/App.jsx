@@ -37,7 +37,7 @@ function App() {
       dataToSend = {
         processingRange,
         dueDateMultiplier,
-        jobName,
+        jobs,
         jobCount,
       };
     } else if (processingTimeRandom && !dueDateRandom) {
@@ -46,7 +46,7 @@ function App() {
       dataToSend = {
         processingRange,
         dueDates,
-        jobName,
+        jobs,
         jobCount,
       };
     } else if (!processingTimeRandom && dueDateRandom) {
@@ -55,14 +55,12 @@ function App() {
       dataToSend = {
         processingTimes,
         dueDateMultiplier,
-        jobName,
         jobCount,
       };
     } else {
       // If neither is random, send the full job details
       dataToSend = {
         jobs, // array for pt and dd
-        jobName,
         jobCount,
       };
     }
