@@ -1,7 +1,7 @@
 from helper import flow_time, lateness, slack, crtical_ratio
 import pandas as pd
-
-
+           
+                
 def fcfo(processing_time_list, due_dates_list, n):
     # print("Processing Time:", processing_time_list)
     # print("Due Dates:", due_dates_list)
@@ -20,7 +20,7 @@ def fcfo(processing_time_list, due_dates_list, n):
     # print("Utilization:", Utilization)
     # print("Avg No. of Jobs in the System:", Avg_no_of_jobs_in_the_system)
     dict = {"Average Lateness:": Avg_latness, "Average Completion Time:": Avg_Completion_time, "Utilization:": Utilization, "Avg No. of Jobs in the System:": Avg_no_of_jobs_in_the_system}
-    df = pd.DataFrame({'Processing Time': processing_time_list, 'Due Dates': due_dates_list, 'Slack': st, 'Flow Time': flow, 'Lateness': ln})
+    df = pd.DataFrame({'Processing Time': processing_time_list, 'Due Dates': due_dates_list, 'Slack': st, 'Critical Ratio': cr, 'Flow Time': flow, 'Lateness': ln})
     return [df, dict]
 
 
