@@ -1,5 +1,5 @@
 body, html {
-  height: 100%;
+  min-height: 100%;
   margin: 0;
   display: flex;
   justify-content: center;
@@ -16,6 +16,7 @@ body, html {
   background-color: #f9f9f9;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  overflow-y: auto;
 }
 
 h1 {
@@ -113,3 +114,59 @@ select option {
   font-size: 1em;
 }
 
+/* New Styles for Random/Manual Entry Options */
+.random{
+  padding: 5px 0px;
+}
+
+.random label{
+    font-size: 16px;
+}
+
+
+.option-section {
+  width: 100%;
+  margin: 15px 0;
+  padding: 10px;
+  background-color: #f5f5f5;
+  border-radius: 6px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.option-section h4 {
+  margin-bottom: 10px;
+  font-size: 1.1em;
+  color: #555;
+}
+
+.option-label {
+  display: block;
+  margin-bottom: 5px;
+  font-size: 0.9em;
+  color: #333;
+  text-align: left;
+  width: 80%;
+  max-width: 300px;
+}
+
+input[type="checkbox"] {
+  margin-right: 10px;
+}
+
+input.range-input {
+  display: inline-block;
+  width: 45%;
+  max-width: 130px;
+}
+
+.range-group {
+  display: flex;
+  justify-content: space-between;
+  width: 80%;
+  max-width: 300px;
+  margin-bottom: 10px;
+}
+
+.range-group input {
+  margin: 0;
+}
