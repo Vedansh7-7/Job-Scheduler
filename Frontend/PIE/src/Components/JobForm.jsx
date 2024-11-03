@@ -1,68 +1,55 @@
 import React, { useState, useEffect } from 'react';
 
-function JobForm({ 
-  onAddJob, 
-  jobIndex, 
-  jobCount, 
-  processingTimeRandom, 
-  processingRange, 
-  dueDateRandom, 
-  dueDateMultiplier 
-}) {
-  const [job, setJob] = useState({ name: '', processingTime: '', dueDate: '' });
+function JobForm({ onAddJob, jobIndex, jobCount, processingTimeRandom, processingRange, dueDateRandom, dueDateMultiplier }) {
+  const [job, setJob] = useState({ name: '', processingTime: '', duedate: '' });
   const [totalProcessingTime, setTotalProcessingTime] = useState(0);
 
-  // Generate random processing time if required
   useEffect(() => {
-    if (processingTimeRandom) {
-      const randomProcessingTime = Math.floor(
-        Math.random() * (processingRange.max - processingRange.min + 1)
-      ) + processingRange.min;
+    if (processingTimeRandom && processingRange.min != null && processingRange.max != null) {
+      const min = Math.min(processingRange.min, processingRange.max);
+      const max = Math.max(processingRange.min, processingRange.max);
 
+      // Generate a new random processing time for each job
+      const randomProcessingTime = Math.floor(Math.random() * (max - min + 1)) + min;
       setJob((prev) => ({ ...prev, processingTime: randomProcessingTime }));
       setTotalProcessingTime((prev) => prev + randomProcessingTime);
     } else {
       setJob((prev) => ({ ...prev, processingTime: '' }));
     }
-  }, [processingTimeRandom, processingRange]);
+  }, [processingTimeRandom, processingRange, jobIndex]); // Include jobIndex to trigger re-calculation
 
-  // Generate random due date if required
   useEffect(() => {
     if (dueDateRandom && totalProcessingTime > 0) {
-      const randomDueDate = Math.floor(
-        Math.random() * 
-        ((totalProcessingTime * dueDateMultiplier.b) - (totalProcessingTime * dueDateMultiplier.a) + 1)
-      ) + (totalProcessingTime * dueDateMultiplier.a);
-
-      setJob((prev) => ({ ...prev, dueDate: randomDueDate }));
+      const { a, b } = dueDateMultiplier;
+      const minDueDate = totalProcessingTime * a;
+      const maxDueDate = totalProcessingTime * b;
+      const randomDueDate = Math.floor(Math.random() * (maxDueDate - minDueDate + 1)) + minDueDate;
+      setJob((prev) => ({ ...prev, duedate: randomDueDate }));
     } else {
-      setJob((prev) => ({ ...prev, dueDate: '' }));
+      setJob((prev) => ({ ...prev, duedate: '' }));
     }
-  }, [dueDateRandom, totalProcessingTime, dueDateMultiplier]);
+  }, [dueDateRandom, totalProcessingTime, dueDateMultiplier, jobIndex]);
 
-  // Handle input change for job details
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setJob((prev) => ({ ...prev, [name]: value }));
+    setJob({ ...job, [name]: value });
   };
 
-  // Handle form submission
   const handleSubmit = (e) => {
     e.preventDefault();
     if (job.name && (job.processingTime || processingTimeRandom)) {
       onAddJob({
         ...job,
         processingTime: parseInt(job.processingTime, 10),
-        dueDate: parseInt(job.dueDate, 10),
+        duedate: parseInt(job.duedate, 10),
       });
-      setJob({ name: '', processingTime: '', dueDate: '' }); // Reset form
+      setJob({ name: '', processingTime: '', duedate: '' });
     }
   };
 
   return (
     <form onSubmit={handleSubmit}>
       <h2>Enter Job {jobIndex + 1} of {jobCount}</h2>
-      
       <input
         type="text"
         name="name"
@@ -86,13 +73,12 @@ function JobForm({
       {!dueDateRandom && (
         <input
           type="number"
-          name="dueDate"
+          name="duedate"
           placeholder="Due Date"
-          value={job.dueDate}
+          value={job.duedate}
           onChange={handleChange}
         />
       )}
-      
       <button type="submit">Add Job</button>
     </form>
   );
