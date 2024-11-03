@@ -40,13 +40,13 @@ function App() {
             checked={processingTimeRandom}
             onChange={() => setProcessingTimeRandom(!processingTimeRandom)}
           />
-          <br />Random Processing Time
+          <br /><span style={{color: "#333"}}>Random Processing Time</span>
         </label>
         {processingTimeRandom && (
           <div>
             <div>
               <label>
-                <strong>x:</strong>
+                <strong style={{color: "#333"}}>x:</strong>
                 <input
                   type="number"
                   placeholder="Min"
@@ -61,7 +61,7 @@ function App() {
             <br />
             <div>
               <label>
-                <strong>y:</strong>
+                <strong style={{color: "#333"}}>y:</strong>
                 <input
                   type="number"
                   placeholder="Max"
@@ -86,13 +86,13 @@ function App() {
             checked={dueDateRandom}
             onChange={() => setDueDateRandom(!dueDateRandom)}
           />
-          <br />Random Due Date
+          <br /><span style={{color: "#333"}}>Random Due Date</span>
         </label>
         {dueDateRandom && (
           <div>
             <div>
               <label>
-                <strong>a:</strong>
+                <strong style={{color: "#333"}}>a:</strong>
                 <input
                   type="number"
                   placeholder="Multiplier a"
@@ -107,7 +107,7 @@ function App() {
             <br />
             <div>
               <label>
-                <strong>b:</strong>
+                <strong style={{color: "#333"}}>b:</strong>
                 <input
                   type="number"
                   placeholder="Multiplier b"
