@@ -18,7 +18,6 @@
 // }
 
 // export default ScheduleDisplay;
-
 import React from 'react';
 
 function ScheduleDisplay({ responseData }) {
@@ -56,8 +55,26 @@ function ScheduleDisplay({ responseData }) {
           ))}
         </tbody>
       </table>
+      <table>
+        <thead>
+          <tr>
+            <th>Average Completion Time</th>
+            <th>Average Lateness</th>
+            <th>Average No. of Jobs in System</th>
+            <th>Utilization</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>{responseData.di['Average Completion Time:']}</td>
+            <td>{responseData.di['Average Lateness:']}</td>
+            <td>{responseData.di['Avg No. of Jobs in the System:']}</td>
+            <td>{responseData.di['Utilization:']}</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   );
 }
 
-export default ScheduleDisplay;
+export default ScheduleDisplay

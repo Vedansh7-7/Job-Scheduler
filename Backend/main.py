@@ -22,8 +22,10 @@ def submit_data():
         job_name.append(name)
     print(job_name)
 # {'processingRange': {'min': 3, 'max': 12}, 'dueDateMultiplier': {'a': 0.4, 'b': 0.8}, 'jobName': '', 'jobCount': 4}
-    ran = data.get('ran', "random")
+    ran = data.get('randomizeAll', "random")
+    print(ran)
     if ran:
+        print("random")
         x = data.get('processingRange', 2)['min']
         y = data.get('processingRange', 100)['max']
         a = data.get('dueDateMultiplier', 0.5)['a']
@@ -47,58 +49,10 @@ def submit_data():
     except ValueError as e:
         print(e)
         return jsonify({"error": str(e)}), 400
-    # print(li[0])
-    # print(li[1])
     df = li[0].to_dict(orient='records')  
     di = li[1] 
-    # print(df)
-    # print(di)
+    print(df)
     return jsonify({"df": df, "di": di})
 
 if __name__ == '__main__':
     app.run(debug=True)
-
-
-# from flask import Flask, request, jsonify
-# from flask_cors import CORS
-# from scheduler import generate_job_data, schedule_jobs
-
-# app = Flask(__name__)
-# CORS(app)
-
-# @app.route('/submit-data', methods=['POST'])
-# def submit_data():
-#     data = request.get_json()
-#     print(data)
-
-#     try:
-#         # Extract parameters with defaults if not provided
-#         n = data.get('jobCount', 5)
-#         scheduling_method = data.get('selectedRule', 'FCFS')
-#         x = data.get('processingRange', {}).get('min', 2)
-#         y = data.get('processingRange', {}).get('max', 10)
-#         a = data.get('dueDateMultiplier', {}).get('a', 0.1)
-#         b = data.get('dueDateMultiplier', {}).get('b', 0.8)
-#         job_name = []
-#         for i in range(n):
-#             name = data.get('jobs')[i]['name']
-#             job_name.append(name)
-#         print(job_name)
-#         # Generate job data
-#         pt_list, dd_list = generate_job_data(x, y, a, b, n)
-#         # 'jobs': [{'name': 'S'}, {'name': 'D'}, {'name': 'F'}]}
-#         # Schedule jobs
-#         li = schedule_jobs(pt_list, dd_list, n, scheduling_method, job_name)
-#         df = li[0].to_dict(orient='records')
-#         di = li[1]
-#         print(jsonify({"df": df, "di": di}))
-#         return jsonify({"df": df, "di": di}), 200
-#     except ValueError as e:
-#         print("Error:", e)
-#         return jsonify({"error": str(e)}), 400
-#     except Exception as e:
-#         print("Unhandled error:", e)
-#         return jsonify({"error": "An unexpected error occurred."}), 500
-
-# if __name__ == '__main__':
-#     app.run(debug=True)

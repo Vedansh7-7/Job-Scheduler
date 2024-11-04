@@ -362,8 +362,11 @@ function App() {
       </div>
       <div className="flow-chart">
         <div className="section raw-material">RAW MATERIAL</div>
+        <div class="arrow"></div>
         <div className="section process">PROCESS</div>
+        <div class="arrow"></div>
         <div className="section product-service">PRODUCT & SERVICE</div>
+        <div class="arrow"></div>
         <div className="section stock">STOCK</div>
       </div>
       <div className="container">
