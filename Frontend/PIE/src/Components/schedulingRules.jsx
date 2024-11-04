@@ -16,9 +16,6 @@ export function scheduleJobs(jobs, rule) {
       case "Smallest Criticality Ratio":
         sortedJobs.sort((a, b) => (a.deadline / a.processingTime) - (b.deadline / b.processingTime));
         break;
-      // case "Random":
-      //   sortedJobs.sort(() => Math.random() - 0.5);
-      //   break;
       default:
         break;
     }

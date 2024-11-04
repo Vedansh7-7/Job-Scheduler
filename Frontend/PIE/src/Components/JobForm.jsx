@@ -8,16 +8,12 @@ function JobForm({ onAddJob, jobIndex, jobCount, processingTimeRandom, processin
     if (processingTimeRandom && processingRange.min != null && processingRange.max != null) {
       const min = Math.min(processingRange.min, processingRange.max);
       const max = Math.max(processingRange.min, processingRange.max);
-
-      // Generate a new random processing time for each job
       const randomProcessingTime = Math.floor(Math.random() * (max - min + 1)) + min;
-    //   array for jobs 
+      
       setJob((prev) => ({ ...prev, processingTime: randomProcessingTime }));
       setTotalProcessingTime((prev) => prev + randomProcessingTime);
-    } else {
-      setJob((prev) => ({ ...prev, processingTime: '' }));
     }
-  }, [processingTimeRandom, processingRange, jobIndex]); // Include jobIndex to trigger re-calculation
+  }, [processingTimeRandom, processingRange]); 
 
   useEffect(() => {
     if (dueDateRandom && totalProcessingTime > 0) {
@@ -25,11 +21,10 @@ function JobForm({ onAddJob, jobIndex, jobCount, processingTimeRandom, processin
       const minDueDate = totalProcessingTime * a;
       const maxDueDate = totalProcessingTime * b;
       const randomDueDate = Math.floor(Math.random() * (maxDueDate - minDueDate + 1)) + minDueDate;
+
       setJob((prev) => ({ ...prev, duedate: randomDueDate }));
-    } else {
-      setJob((prev) => ({ ...prev, duedate: '' }));
     }
-  }, [dueDateRandom, totalProcessingTime, dueDateMultiplier, jobIndex]);
+  }, [dueDateRandom, totalProcessingTime, dueDateMultiplier]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -49,7 +44,7 @@ function JobForm({ onAddJob, jobIndex, jobCount, processingTimeRandom, processin
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} className='form'>
       <h2>Enter Job {jobIndex + 1} of {jobCount}</h2>
       <input
         type="text"
@@ -80,7 +75,7 @@ function JobForm({ onAddJob, jobIndex, jobCount, processingTimeRandom, processin
           onChange={handleChange}
         />
       )}
-      <button type="submit">Add Job</button>
+      <button className="btn" type="submit">Add Job</button>
     </form>
   );
 }
