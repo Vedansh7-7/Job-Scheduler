@@ -72,6 +72,7 @@ CORS(app)
 @app.route('/submit-data', methods=['POST'])
 def submit_data():
     data = request.get_json()
+    print(data)
 
     try:
         # Extract parameters with defaults if not provided
@@ -81,15 +82,19 @@ def submit_data():
         y = data.get('processingRange', {}).get('max', 10)
         a = data.get('dueDateMultiplier', {}).get('a', 0.1)
         b = data.get('dueDateMultiplier', {}).get('b', 0.8)
-
+        job_name = []
+        for i in range(n):
+            name = data.get('jobs')[i]['name']
+            job_name.append(name)
+        print(job_name)
         # Generate job data
         pt_list, dd_list = generate_job_data(x, y, a, b, n)
-
+        # 'jobs': [{'name': 'S'}, {'name': 'D'}, {'name': 'F'}]}
         # Schedule jobs
         li = schedule_jobs(pt_list, dd_list, n, scheduling_method)
         df = li[0].to_dict(orient='records')
         di = li[1]
-        print(jsonify({"df": df, "di": di}))
+        # print(jsonify({"df": df, "di": di}))
         return jsonify({"df": df, "di": di}), 200
     except ValueError as e:
         print("Error:", e)

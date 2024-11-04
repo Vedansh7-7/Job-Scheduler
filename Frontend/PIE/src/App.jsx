@@ -482,6 +482,7 @@ function App() {
         <div className="modal3">
           <div className="modal-content">
             <RuleSelector selectedRule={selectedRule} onRuleChange={handleRuleChange} />
+            <button className='btn' onClick={handleSubmit}>Submit</button>
             <div className="result">
               <ScheduleDisplay responseData={responseData} />
             </div>
