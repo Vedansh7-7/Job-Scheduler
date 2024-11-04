@@ -462,13 +462,13 @@ function App() {
       )}
 
       {showModal3 && (
-        <div className="modal">
+        <div className="modal3">
           <div className="modal-content">
             <RuleSelector selectedRule={selectedRule} onRuleChange={handleRuleChange} />
             <div className="result">
               <ScheduleDisplay responseData={responseData} />
             </div>
-            <button onClick={() => setShowModal3(false)}>Close</button>
+            <button onClick={() => setShowModal3(false)} className='btn'>Close</button>
           </div>
         </div>
       )}
