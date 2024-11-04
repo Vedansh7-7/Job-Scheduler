@@ -295,6 +295,10 @@ function App() {
     setShowModal3(true);
   }
 
+  const handleRandomizeAll = () => {
+    setRandomizeAll(true);
+  }
+
   const handleCloseModal = () => {
     setShowModal(false);
   };
@@ -326,6 +330,7 @@ function App() {
       selectedRule,
       processingRange,
       dueDateMultiplier,
+      jobs,
     };
 
     try {
@@ -372,7 +377,7 @@ function App() {
             className="job-input"
           />
           <div className="button-group">
-            <button className="input-button" onClick={handleRandomizedInputClick}>
+            <button className="input-button" onClick={() => { handleRandomizedInputClick(); handleRandomizeAll(); }}>
               Randomised Input
             </button>
             <button className="input-button" onClick={handleManualInputClick}>Manual Input</button>
