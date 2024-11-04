@@ -263,7 +263,6 @@ import React, { useState } from 'react';
 import JobForm from './Components/JobForm';
 import RuleSelector from './Components/RuleSelector';
 import ScheduleDisplay from './Components/ScheduleDisplay';
-import { scheduleJobs } from './Components/schedulingRules';
 import './App.css';
 
 function App() {
@@ -278,14 +277,14 @@ function App() {
   const [randomizeAll, setRandomizeAll] = useState(false);
   const [responseData, setResponseData] = useState(null);
   const [showModal, setShowModal] = useState(false);
-  const [showModal2 , setShowModal2] = useState(false);
-  const [showModal3 , setShowModal3] = useState(false);
+  const [showModal2, setShowModal2] = useState(false);
+  const [showModal3, setShowModal3] = useState(false);
 
   const handleJobCountChange = (e) => setJobCount(Math.max(1, Number(e.target.value)));
 
   const handleAddJob = (newJob) => {
     setJobs([...jobs, newJob]);
-  };  
+  };
 
   const handleRandomizedInputClick = () => {
     setShowModal(true);
@@ -293,11 +292,11 @@ function App() {
 
   const handleSubmitClick = () => {
     setShowModal3(true);
-  }
+  };
 
   const handleRandomizeAll = () => {
     setRandomizeAll(true);
-  }
+  };
 
   const handleCloseModal = () => {
     setShowModal(false);
@@ -305,7 +304,7 @@ function App() {
 
   const handleManualInputClick = () => {
     setShowModal2(true);
-  }
+  };
 
   const handleCloseModal2 = () => {
     setShowModal2(false);
@@ -343,7 +342,7 @@ function App() {
       });
 
       if (!response.ok) {
-        throw new Error('Failed to send data');
+        throw new Error(`Error ${response.status}: ${response.statusText}`);
       }
 
       const responseData = await response.json();
@@ -352,6 +351,7 @@ function App() {
       setShowModal(false); // Close modal on success
     } catch (error) {
       console.error('Error:', error);
+      alert('Failed to submit data. Please try again.');
     }
   };
 
@@ -361,7 +361,7 @@ function App() {
         <h1>Process Flow</h1>
       </div>
       <div className="flow-chart">
-      <div className="section raw-material">RAW MATERIAL</div>
+        <div className="section raw-material">RAW MATERIAL</div>
         <div className="section process">PROCESS</div>
         <div className="section product-service">PRODUCT & SERVICE</div>
         <div className="section stock">STOCK</div>
@@ -442,20 +442,20 @@ function App() {
           <div className="modal-content">
             <h3>Manual Input Parameters</h3>
             {jobs.length < jobCount ? (
-                <JobForm
-                  jobIndex={jobs.length}
-                  jobCount={jobCount}
-                  onAddJob={handleAddJob}
-                  processingTimeRandom={processingTimeRandom}
-                  dueDateRandom={dueDateRandom}
-                  processingRange={processingRange}
-                  dueDateMultiplier={dueDateMultiplier}
-                />
-              ) : (
-                <div>
-                  <p>All jobs added!</p>
-                </div>
-              )}
+              <JobForm
+                jobIndex={jobs.length}
+                jobCount={jobCount}
+                onAddJob={handleAddJob}
+                processingTimeRandom={processingTimeRandom}
+                dueDateRandom={dueDateRandom}
+                processingRange={processingRange}
+                dueDateMultiplier={dueDateMultiplier}
+              />
+            ) : (
+              <div>
+                <p>All jobs added!</p>
+              </div>
+            )}
             <button onClick={() => { handleSubmit(); handleSubmitClick(); }} className="input-button random-btn">
               Submit
             </button>
@@ -473,15 +473,15 @@ function App() {
             <div className="result">
               <ScheduleDisplay responseData={responseData} />
             </div>
-            <button onClick={() => setShowModal3(false)} className='btn'>Close</button>
+            <button onClick={() => setShowModal3(false)} className="btn">Close</button>
           </div>
         </div>
       )}
-
     </div>
   );
 }
 
 export default App;
+
 
 
