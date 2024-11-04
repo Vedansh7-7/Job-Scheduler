@@ -45,7 +45,7 @@ function ScheduleDisplay({ responseData }) {
         <tbody>
           {responseData.df.map((job, index) => (
             <tr key={index}>
-              <td>{job['JobName']}</td>
+              <td>{job['Job Name']}{job['JobName']}</td>
               <td>{job['Critical Ratio']}</td>
               <td>{job['Due Dates']}</td>
               <td>{job['Flow Time']}</td>
