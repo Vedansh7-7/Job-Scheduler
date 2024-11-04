@@ -91,10 +91,10 @@ def submit_data():
         pt_list, dd_list = generate_job_data(x, y, a, b, n)
         # 'jobs': [{'name': 'S'}, {'name': 'D'}, {'name': 'F'}]}
         # Schedule jobs
-        li = schedule_jobs(pt_list, dd_list, n, scheduling_method)
+        li = schedule_jobs(pt_list, dd_list, n, scheduling_method, job_name)
         df = li[0].to_dict(orient='records')
         di = li[1]
-        # print(jsonify({"df": df, "di": di}))
+        print(jsonify({"df": df, "di": di}))
         return jsonify({"df": df, "di": di}), 200
     except ValueError as e:
         print("Error:", e)

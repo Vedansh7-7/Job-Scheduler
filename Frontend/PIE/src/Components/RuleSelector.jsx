@@ -1,7 +1,7 @@
 import React from 'react';
 
 function RuleSelector({ selectedRule, onRuleChange }) {
-  const rules = ["FCFS", "SPT", "LPT", "Smallest Slack", "Smallest Criticality Ratio", "Random"];
+  const rules = ["FCFS", "SPT", "LPT", "Smallest Slack", "Smallest Criticality Ratio"];
 
   return (
     <div>

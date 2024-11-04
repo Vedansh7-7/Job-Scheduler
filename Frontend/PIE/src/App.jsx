@@ -333,12 +333,12 @@ function App() {
     };
 
     try {
-      const response = await fetch('http://localhost:5173/submit-data', {
+      const response = await fetch('http://localhost:5000/submit-data', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(dataToSend),
+        body: JSON.stringify(dataToSend), 
       });
 
       if (!response.ok) {
