@@ -35,60 +35,65 @@ function App() {
     setDueDateRandom(newRandomizeAll);
   };
 
-  const handleSubmit = async () => {
-    let dataToSend = {
-      randomizeAll,
-      jobCount,
-      selectedRule,
+  const [responseData, setResponseData] = useState(null);
+
+const handleSubmit = async () => {
+  let dataToSend = {
+    randomizeAll,
+    jobCount,
+    selectedRule,
+  };
+
+  if (processingTimeRandom && dueDateRandom) {
+    dataToSend = {
+      ...dataToSend,
+      processingRange,
+      dueDateMultiplier,
+      jobs,
     };
+  } else if (processingTimeRandom && !dueDateRandom) {
+    const dueDates = jobs.map(job => job.dueDate); 
+    dataToSend = {
+      ...dataToSend,
+      processingRange,
+      dueDates,
+      jobs,
+    };
+  } else if (!processingTimeRandom && dueDateRandom) {
+    const processingTimes = jobs.map(job => job.processingTime); 
+    dataToSend = {
+      ...dataToSend,
+      processingTimes,
+      dueDateMultiplier,
+    };
+  } else {
+    dataToSend = {
+      ...dataToSend,
+      jobs,
+    };
+  }
 
-    if (processingTimeRandom && dueDateRandom) {
-      dataToSend = {
-        ...dataToSend,
-        processingRange,
-        dueDateMultiplier,
-        jobs,
-      };
-    } else if (processingTimeRandom && !dueDateRandom) {
-      const dueDates = jobs.map(job => job.dueDate); 
-      dataToSend = {
-        ...dataToSend,
-        processingRange,
-        dueDates,
-        jobs,
-      };
-    } else if (!processingTimeRandom && dueDateRandom) {
-      const processingTimes = jobs.map(job => job.processingTime); 
-      dataToSend = {
-        ...dataToSend,
-        processingTimes,
-        dueDateMultiplier,
-      };
-    } else {
-      dataToSend = {
-        ...dataToSend,
-        jobs,
-      };
+  try {
+    const response = await fetch('http://localhost:5173/submit-data', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(dataToSend),
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to send data');
     }
 
-    try {
-      const response = await fetch('http://localhost:5173/submit-data', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(dataToSend),
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to send data');
-      }
-
-      console.log('Data sent successfully');
-    } catch (error) {
-      console.error('Error:', error);
-    }
+    const responseData = await response.json();
+    setResponseData(responseData);
+    console.log('Response:', responseData);
+  } catch (error) {
+    console.error('Error:', error);
+  }
 };
+
 
 
 return (
@@ -238,6 +243,15 @@ return (
 
     {/* Send data to backend*/}
     <button onClick={handleSubmit}>Submit</button>
+    
+    {responseData && (
+        <div>
+          <h3>Response from Server:</h3>
+          <p><strong>DF:</strong> {JSON.stringify(responseData.df)}</p>
+          <p><strong>DI:</strong> {JSON.stringify(responseData.di)}</p>
+        </div>
+      )}
+    
   </div>
 );
 
