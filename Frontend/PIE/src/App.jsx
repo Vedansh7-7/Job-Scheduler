@@ -389,6 +389,21 @@ function App() {
         <div className="modal">
           <div className="modal-content">
             <h3>Randomized Input Parameters</h3>
+            {jobs.length < jobCount ? (
+                <JobForm
+                  jobIndex={jobs.length}
+                  jobCount={jobCount}
+                  onAddJob={handleAddJob}
+                  processingTimeRandom={processingTimeRandom}
+                  dueDateRandom={dueDateRandom}
+                  processingRange={processingRange}
+                  dueDateMultiplier={dueDateMultiplier}
+                />
+              ) : (
+                <div>
+                  <p>All jobs added!</p>
+                </div>
+              )}
             <label>
               Due Date range (x, y):
               <input
