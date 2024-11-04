@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 
-function JobForm({ onAddJob, jobIndex, jobCount, processingTimeRandom, processingRange, dueDateRandom, dueDateMultiplier }) {
+function JobForm({ onAddJob, jobIndex, jobCount, processingTimeRandom, processingRange, dueDateRandom, dueDateMultiplier, nameOnly }) {
   const [job, setJob] = useState({ name: '', processingTime: '', duedate: '' });
   const [totalProcessingTime, setTotalProcessingTime] = useState(0);
 
   useEffect(() => {
-    if (processingTimeRandom && processingRange.min != null && processingRange.max != null) {
+    if (!nameOnly && processingTimeRandom && processingRange.min != null && processingRange.max != null) {
       const min = Math.min(processingRange.min, processingRange.max);
       const max = Math.max(processingRange.min, processingRange.max);
       const randomProcessingTime = Math.floor(Math.random() * (max - min + 1)) + min;
@@ -13,10 +13,10 @@ function JobForm({ onAddJob, jobIndex, jobCount, processingTimeRandom, processin
       setJob((prev) => ({ ...prev, processingTime: randomProcessingTime }));
       setTotalProcessingTime((prev) => prev + randomProcessingTime);
     }
-  }, [processingTimeRandom, processingRange]); 
+  }, [nameOnly, processingTimeRandom, processingRange]); 
 
   useEffect(() => {
-    if (dueDateRandom && totalProcessingTime > 0) {
+    if (!nameOnly && dueDateRandom && totalProcessingTime > 0) {
       const { a, b } = dueDateMultiplier;
       const minDueDate = totalProcessingTime * a;
       const maxDueDate = totalProcessingTime * b;
@@ -24,7 +24,7 @@ function JobForm({ onAddJob, jobIndex, jobCount, processingTimeRandom, processin
 
       setJob((prev) => ({ ...prev, duedate: randomDueDate }));
     }
-  }, [dueDateRandom, totalProcessingTime, dueDateMultiplier]);
+  }, [nameOnly, dueDateRandom, totalProcessingTime, dueDateMultiplier]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -33,11 +33,11 @@ function JobForm({ onAddJob, jobIndex, jobCount, processingTimeRandom, processin
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (job.name && (job.processingTime || processingTimeRandom)) {
+    if (job.name) {
       onAddJob({
-        ...job,
-        processingTime: parseInt(job.processingTime, 10),
-        duedate: parseInt(job.duedate, 10),
+        name: job.name,
+        processingTime: nameOnly ? undefined : parseInt(job.processingTime, 10),
+        duedate: nameOnly ? undefined : parseInt(job.duedate, 10),
       });
       setJob({ name: '', processingTime: '', duedate: '' });
     }
@@ -55,7 +55,8 @@ function JobForm({ onAddJob, jobIndex, jobCount, processingTimeRandom, processin
         required
       />
       
-      {!processingTimeRandom && (
+      {/* Conditionally render processing time and due date fields */}
+      {!nameOnly && !processingTimeRandom && (
         <input
           type="number"
           name="processingTime"
@@ -66,7 +67,7 @@ function JobForm({ onAddJob, jobIndex, jobCount, processingTimeRandom, processin
         />
       )}
       
-      {!dueDateRandom && (
+      {!nameOnly && !dueDateRandom && (
         <input
           type="number"
           name="duedate"

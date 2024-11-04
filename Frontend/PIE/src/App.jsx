@@ -280,6 +280,7 @@ function App() {
   const [showModal, setShowModal] = useState(false);
   const [showModal2 , setShowModal2] = useState(false);
   const [showModal3 , setShowModal3] = useState(false);
+  const [jobName, setJobName] = useState("");
 
   const handleJobCountChange = (e) => setJobCount(Math.max(1, Number(e.target.value)));
 
@@ -390,20 +391,17 @@ function App() {
           <div className="modal-content">
             <h3>Randomized Input Parameters</h3>
             {jobs.length < jobCount ? (
-                <JobForm
-                  jobIndex={jobs.length}
-                  jobCount={jobCount}
-                  onAddJob={handleAddJob}
-                  processingTimeRandom={processingTimeRandom}
-                  dueDateRandom={dueDateRandom}
-                  processingRange={processingRange}
-                  dueDateMultiplier={dueDateMultiplier}
-                />
-              ) : (
-                <div>
-                  <p>All jobs added!</p>
-                </div>
-              )}
+              <JobForm
+                onAddJob={handleAddJob}
+                jobIndex={jobs.length}
+                jobCount={jobCount}
+                nameOnly={true}  // Only job name will be shown
+              />
+            ) : (
+              <div>
+                <p>All jobs added!</p>
+              </div>
+            )}
             <label>
               Due Date range (x, y):
               <input
