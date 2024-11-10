@@ -72,12 +72,12 @@ function App() {
     };
 
     try {
-      const response = await fetch('http://localhost:5173/submit-data', {
+      const response = await fetch('http://localhost:5000/submit-data', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(dataToSend),
+        body: JSON.stringify(dataToSend), 
       });
 
       if (!response.ok) {
@@ -99,30 +99,42 @@ function App() {
       <div className="header">
         <h1>Process Flow</h1>
       </div>
+      <div className="container">
       <div className="flow-chart">
         <div className="section raw-material">RAW MATERIAL</div>
+        <div className="arrow"></div>
         <div className="section process">PROCESS</div>
+        <div className="arrow"></div>
         <div className="section product-service">PRODUCT & SERVICE</div>
+        <div className="arrow"></div>
         <div className="section stock">STOCK</div>
       </div>
-      <div className="container">
-        <div className="form-section">
-          <h2>Number of Jobs: {jobCount}</h2>
-          <input
-            type="number"
-            min="1"
-            value={jobCount}
-            onChange={handleJobCountChange}
-            className="job-input"
-          />
-          <div className="button-group">
-            <button className="input-button" onClick={() => { handleRandomizedInputClick(); handleRandomizeAll(); }}>
-              Randomised Input
-            </button>
-            <button className="input-button" onClick={handleManualInputClick}>Manual Input</button>
-          </div>
+
+      <div className="form-section">
+        <h2>Number of Jobs: {jobCount}</h2>
+        <input
+          type="number"
+          min="1"
+          value={jobCount}
+          onChange={handleJobCountChange}
+          className="job-input"
+        />
+        <div className="button-group">
+          <button
+            className="input-button"
+            onClick={() => {
+              handleRandomizedInputClick();
+              handleRandomizeAll();
+            }}
+          >
+            Randomised Input
+          </button>
+          <button className="input-button" onClick={handleManualInputClick}>
+            Manual Input
+          </button>
         </div>
       </div>
+    </div>
 
       {showModal && (
         <div className="modal" style={{ overflowY: "auto", display: 'flex', justifyContent: 'center', alignItems: 'center' }}>

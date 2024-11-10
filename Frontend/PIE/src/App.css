@@ -1,3 +1,6 @@
+body{
+  overflow: hidden;
+}
 .App {
   text-align: center;
   color: #fff;
@@ -14,22 +17,19 @@
 }
 
 .container {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr;
-  gap: 20px;
+  display: flex;
+  flex-direction: column;
 }
 
-.flow-chart{
-  display: grid;
-  grid-template-columns: 1fr 1fr 2fr 1fr;
-  grid-template-rows: auto auto;
-  gap: 20px;
-  margin-bottom: 40px;
-  justify-items: center;
+.flow-chart {
+  display: flex;
   align-items: center;
+  justify-content: center;
+  margin-bottom: 50px;
+  gap: 20px; /* Space between sections */
 }
 
-.section{
+.section {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -41,6 +41,21 @@
   padding: 20px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
   background-color: rgba(64, 0, 0, 0.8);
+}
+
+.arrow {
+  width: 30px;
+  height: 2px;
+  background-color: white;
+  position: relative;
+}
+
+.arrow::after {
+  content: '→';
+  position: absolute;
+  right: -10px;
+  top: -5px;
+  color: white;
 }
 
 .form-section {
@@ -81,7 +96,6 @@
   background-color: #b00000;
 }
 
-
 .response {
   margin-top: 20px;
   background-color: #500000;
@@ -89,7 +103,7 @@
   border-radius: 10px;
 }
 
-.modal {
+.modal, .modal3 {
   position: fixed;
   top: 50%;
   left: 50%;
@@ -150,6 +164,9 @@
   box-shadow: 0 0 5px #fff;
 }
 
+
+
+/* Responsive design */
 @media (max-width: 500px) {
   .modal {
     width: 90%;
@@ -170,17 +187,17 @@
   }
 }
 
-.form{
+.form {
   display: flex;
   flex-direction: column;
 }
 
-.form input{
+.form input {
   margin-bottom: 10px;
   height: 20px;
 }
 
-.btn{
+.btn {
   border: 1px solid #fff;
   background-color: #900000;
   color: #fff;
@@ -192,18 +209,105 @@
   transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
-.modal3{
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background-color: #b00000;
-  padding: 30px 20px;
-  border-radius: 15px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-  z-index: 1000;
-  width: 90%;
-  height: 100vh;
-  color: #fff;
+
+.button-group{
+  margin-top: 30px;
+}
+
+button{
+  margin-right: 40px;
+}
+
+.arrow {
+  width: 60px;
+  height: 2px;
+  background-color: #fff;
+  position: relative;
+}
+
+.arrow::after {
+  content: "";
+  position: absolute;
+  top: -4px;
+  right: -10px;
+  border: 5px solid transparent;
+  border-left-color: #fff;
+}
+
+.schedule-display {
+  background-color: #600000; /* Darker red background */
+  color: #fff; /* White text */
+  padding: 20px;
+  height: 100vh; /* Full viewport height */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+h2 {
+  margin-bottom: 20px;
+}
+
+
+/* ScheduleDisplay.css */
+
+.schedule-container {
+  margin: 20px;
+  padding: 20px;
+  border-radius: 8px;
+  background-color: #f8f8f8; /* Light background for contrast */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow effect */
+}
+
+.schedule-container h2 {
+  color: #c00; /* Dark red color for heading */
+  text-align: center;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+}
+
+th, td {
+  padding: 12px;
+  text-align: left;
+  border-bottom: 1px solid #ddd; /* Light gray border */
+}
+
+th {
+  background-color: #c00; /* Red background for headers */
+  color: white; /* White text for headers */
+}
+
+tr:hover {
+  background-color: #f1f1f1; /* Light gray on hover for rows */
+}
+
+td {
+  background-color: #fff; /* White background for data cells */
+  color: #333; /* Darker text for readability */
+}
+
+td:nth-child(odd) {
+  background-color: #f9f9f9; /* Light gray for odd rows */
+}
+
+table:last-of-type {
+  margin-top: 20px; /* Spacing between tables */
+}
+
+
+.modal3 {
+  max-height: 100vh; /* Set a larger max height for more rows visibility */
+  max-width: 100vw; /* Set a larger max width for more columns visibility */
+  overflow-x: auto; /* Enable horizontal scrolling */
+  overflow-y: auto; /* Enable vertical scrolling */
+  margin: 0 auto; /* Center the table */
+  background: linear-gradient(to bottom, #a00000, #330000);
+  border-radius: 8px; /* Rounded corners */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Add subtle shadow for better visibility */
 }
 

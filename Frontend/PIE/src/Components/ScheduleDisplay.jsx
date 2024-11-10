@@ -18,7 +18,6 @@
 // }
 
 // export default ScheduleDisplay;
-
 import React from 'react';
 
 function ScheduleDisplay({ responseData }) {
@@ -33,7 +32,7 @@ function ScheduleDisplay({ responseData }) {
       <table>
         <thead>
           <tr>
-            {/* <th>Job Name</th> */}
+            <th>Job Name</th>
             <th>Critical Ratio</th>
             <th>Due Dates</th>
             <th>Flow Time</th>
@@ -45,7 +44,7 @@ function ScheduleDisplay({ responseData }) {
         <tbody>
           {responseData.df.map((job, index) => (
             <tr key={index}>
-              {/* <td>{`Job ${index + 1}`}</td> */}
+              <td>{job['Job Name']}{job['JobName']}</td>
               <td>{job['Critical Ratio']}</td>
               <td>{job['Due Dates']}</td>
               <td>{job['Flow Time']}</td>
@@ -56,8 +55,26 @@ function ScheduleDisplay({ responseData }) {
           ))}
         </tbody>
       </table>
+      <table>
+        <thead>
+          <tr>
+            <th>Average Completion Time</th>
+            <th>Average Lateness</th>
+            <th>Average No. of Jobs in System</th>
+            <th>Utilization</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>{responseData.di['Average Completion Time:']}</td>
+            <td>{responseData.di['Average Lateness:']}</td>
+            <td>{responseData.di['Avg No. of Jobs in the System:']}</td>
+            <td>{responseData.di['Utilization:']}</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   );
 }
 
-export default ScheduleDisplay;
+export default ScheduleDisplay
