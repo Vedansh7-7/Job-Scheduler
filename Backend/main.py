@@ -1,29 +1,45 @@
 from flask import Flask, request, jsonify, session
 from flask_cors import CORS
+from flask_session import Session
 from scheduler import generate_job_data, schedule_jobs
 import os
 
 app = Flask(__name__)
+app.config['SESSION_TYPE'] = 'filesystem'
+app.config['SECRET_KEY'] = os.urandom(24)
+Session(app)
 CORS(app)
-app.secret_key = os.urandom(24)  # Needed to use session in Flask
+
+# In-memory storage for job data by session ID
+job_data_store = {}
+
+@app.before_request
+def assign_session_id():
+    # Assign a unique session ID if not already present
+    if 'session_id' not in session:
+        session['session_id'] = os.urandom(24).hex()
 
 @app.route('/submit-data', methods=['POST'])
 def submit_data():
     data = request.get_json()
-    print(data)
+    session_id = session.get('session_id')
+    
+    # Ensure session-based job data is initialized
+    if session_id not in job_data_store:
+        job_data_store[session_id] = {"pt_list": [], "dd_list": []}
+    
+    global n 
     n = data.get('jobCount', 5)
     ran = data.get('randomizeAll', False)
     scheduling_method = data.get('selectedRule', 'FCFS')
+    global name_list
     name_list = []
 
-    # Initialize lists if they are not already in the session
-    if 'pt_list' not in session or 'dd_list' not in session:
-        session['pt_list'] = []
-        session['dd_list'] = []
-    
-    # Retrieve pt_list and dd_list from the session
-    pt_list = session['pt_list']
-    dd_list = session['dd_list']
+    # Retrieve pt_list and dd_list from in-memory store for this session
+    global pt_list
+    pt_list = job_data_store[session_id]["pt_list"]
+    global dd_list
+    dd_list = job_data_store[session_id]["dd_list"]
 
     if ran:
         if not pt_list or not dd_list:  # Only generate if lists are empty
@@ -35,11 +51,10 @@ def submit_data():
             for j in jobs:
                 name_list.append(j['name'])
 
-            # Generate job data and update session variables
+            # Generate job data and store in memory for this session
             pt_list, dd_list = generate_job_data(x, y, a, b, n)
-            session['pt_list'] = pt_list
-            session['dd_list'] = dd_list
-
+            job_data_store[session_id]["pt_list"] = pt_list
+            job_data_store[session_id]["dd_list"] = dd_list
     else:
         jobs = data.get('jobs')
         for i in range(n):
@@ -50,7 +65,27 @@ def submit_data():
             pt_list.append(pt)
             dd_list.append(dd)
             name_list.append(name)
+        
+        # Update the in-memory store with user-provided values
+        job_data_store[session_id]["pt_list"] = pt_list
+        job_data_store[session_id]["dd_list"] = dd_list
+
+    try:
+        li = schedule_jobs(pt_list, dd_list, n, scheduling_method, name_list)
+    except ValueError as e:
+        print(e)
+        return jsonify({"error": str(e)}), 400
     
+    df = li[0].to_dict(orient='records')  
+    di = li[1] 
+    
+    return jsonify({"df": df, "di": di})
+
+@app.route('/submit-data-rule-change', methods=["POST",])
+def submit_data_rule_change():
+    data = request.get_json()
+    scheduling_method = data.get('selectedRule', 'FCFS')
+
     try:
         li = schedule_jobs(pt_list, dd_list, n, scheduling_method, name_list)
     except ValueError as e:

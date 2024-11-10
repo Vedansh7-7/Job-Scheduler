@@ -94,6 +94,37 @@ function App() {
     }
   };
 
+  
+  const handleSubmitRuleChange = async () => {
+    let dataToSend = {
+      selectedRule,
+      processingRange,
+      dueDateMultiplier,
+      jobs,
+    };
+
+    try {
+      const response = await fetch('http://localhost:5000/submit-data-rule-change', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(dataToSend), 
+      });
+
+      if (!response.ok) {
+        throw new Error(`Error ${response.status}: ${response.statusText}`);
+      }
+
+      const responseData = await response.json();
+      setResponseData(responseData);
+      console.log('Response:', responseData);
+      setShowModal(false); // Close modal on success
+    } catch (error) {
+      console.error('Error:', error);
+      alert('Failed to submit data. Please try again.');
+    }
+  };
   return (
     <div className="App">
       <div className="header">
@@ -235,7 +266,7 @@ function App() {
         <div className="modal3">
           <div className="modal-content">
             <RuleSelector selectedRule={selectedRule} onRuleChange={handleRuleChange} />
-            <button className='btn' onClick={handleSubmit}>Submit</button>
+            <button className='btn' onClick={handleSubmitRuleChange}>Submit</button>
             <div className="result">
               <ScheduleDisplay responseData={responseData} />
             </div>
@@ -246,6 +277,7 @@ function App() {
     </div>
   );
 }
+
 
 export default App;
 
