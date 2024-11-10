@@ -33,24 +33,24 @@ function ScheduleDisplay({ responseData }) {
         <thead>
           <tr>
             <th>Job Name</th>
-            <th>Critical Ratio</th>
+            <th>Processing Time</th>
             <th>Due Dates</th>
+            <th>Critical Ratio</th>
+            <th>Slack</th>
             <th>Flow Time</th>
             <th>Lateness</th>
-            <th>Processing Time</th>
-            <th>Slack</th>
           </tr>
         </thead>
         <tbody>
           {responseData.df.map((job, index) => (
             <tr key={index}>
-              <td>{job['Job Name']}{job['JobName']}</td>
-              <td>{job['Critical Ratio']}</td>
+              <td>{job['Job Names']}</td>
+              <td>{job['Processing Time']}</td>
               <td>{job['Due Dates']}</td>
+              <td>{job['Critical Ratio']}</td>
+              <td>{job['Slack']}</td>
               <td>{job['Flow Time']}</td>
               <td>{job['Lateness']}</td>
-              <td>{job['Processing Time']}</td>
-              <td>{job['Slack']}</td>
             </tr>
           ))}
         </tbody>

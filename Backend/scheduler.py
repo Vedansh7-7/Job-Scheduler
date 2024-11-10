@@ -18,17 +18,17 @@ def generate_job_data(x, y, a, b, n):
     return pt_list, dd_list
 
 
-def schedule_jobs(pt_list, dd_list, n, scheduling_method):
+def schedule_jobs(pt_list, dd_list, n, scheduling_method, name_lsit):
     if scheduling_method == 'FCFS':
-        return fcfo(pt_list, dd_list, n)
+        return fcfo(pt_list, dd_list, n, name_lsit)
     elif scheduling_method == 'SPT':
-        return spt(pt_list, dd_list, n)
+        return spt(pt_list, dd_list, n, name_lsit)
     elif scheduling_method == 'LPT':
-        return lpt(pt_list, dd_list, n)
+        return lpt(pt_list, dd_list, n, name_lsit)
     elif scheduling_method == 'Smallest Slack':
-        return smallest_slack(pt_list, dd_list, n)
+        return smallest_slack(pt_list, dd_list, n, name_lsit)
     elif scheduling_method == 'Smallest Criticality Ratio':
-        return smallest_critical_ratio(pt_list, dd_list, n)
+        return smallest_critical_ratio(pt_list, dd_list, n, name_lsit)
     else:
         raise ValueError("Invalid scheduling method selected.")
 
