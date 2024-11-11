@@ -58,14 +58,18 @@ body{
   color: white;
 }
 
+.contain{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .form-section {
-  grid-column: span 4;
   width: 50vw;
   height: 40vh;
   background-color: #600000;
   padding: 20px;
   border-radius: 15px;
-  position: relative;
 }
 
 .job-input {
@@ -303,8 +307,6 @@ table:last-of-type {
 .modal3 {
   max-height: 100vh; /* Set a larger max height for more rows visibility */
   max-width: 100vw; /* Set a larger max width for more columns visibility */
-  overflow-x: auto; /* Enable horizontal scrolling */
-  overflow-y: auto; /* Enable vertical scrolling */
   margin: 0 auto; /* Center the table */
   background: linear-gradient(to bottom, #a00000, #330000);
   border-radius: 8px; /* Rounded corners */

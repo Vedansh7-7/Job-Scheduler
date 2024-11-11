@@ -140,7 +140,7 @@ function App() {
         <div className="arrow"></div>
         <div className="section stock">STOCK</div>
       </div>
-
+      <div className="contain">
       <div className="form-section">
         <h2>Number of Jobs: {jobCount}</h2>
         <input
@@ -165,6 +165,7 @@ function App() {
           </button>
         </div>
       </div>
+      </div>
     </div>
 
       {showModal && (
@@ -184,7 +185,7 @@ function App() {
               </div>
             )}
             <label>
-              Due Date range (x, y):
+              Processing Time range (x, y):
               <input
                 type="number"
                 placeholder="x"
@@ -203,7 +204,7 @@ function App() {
               />
             </label>
             <label>
-              Processing Time Multiplier (a, b):
+              Due Date Multiplier (a, b):
               <input
                 type="number"
                 placeholder="a"

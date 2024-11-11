@@ -10,7 +10,7 @@ app.config['SECRET_KEY'] = os.urandom(24)
 Session(app)
 CORS(app)
 
-job_data_store = {}
+job_data_store = {} 
 
 @app.before_request
 def assign_session_id():
